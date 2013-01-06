@@ -203,9 +203,10 @@ def build_markdown_header(title, date, author, categories, tags, slug):
     if date:
         header += 'Date: %s\n' % date
     if author:
-        header += 'Author: %s\n' % author
+        #header += 'Author: %s\n' % author
+        header += 'Author: fitoria\n'
     if categories:
-        header += 'Category: %s\n' % ', '.join(categories)
+        header += 'Categories: %s\n' % ','.join(categories)
     if tags:
         header += 'Tags: %s\n' % ', '.join(tags)
     if slug:
@@ -226,12 +227,19 @@ def fields2pelican(fields, out_markup, output_path, dircat=False, strip_raw=Fals
 
         filename = os.path.basename(filename)
 
+        year, month = date.split('-')[:2]
+
         # option to put files in directories with categories names
         if dircat and (len(categories) > 0):
             catname = slugify(categories[0])
             out_filename = os.path.join(output_path, catname, filename+ext)
             if not os.path.isdir(os.path.join(output_path, catname)):
                 os.mkdir(os.path.join(output_path, catname))
+        elif year and month:
+            month_dir = os.path.join(output_path, year, month)
+            if not os.path.exists(month_dir):
+                os.makedirs(month_dir)
+            out_filename = os.path.join(month_dir, filename+ext)
         else:
             out_filename = os.path.join(output_path, filename+ext)
 

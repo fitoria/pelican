@@ -236,7 +236,7 @@ class Page(object):
 
 
 class Article(Page):
-    mandatory_properties = ('title', 'date', 'category')
+    mandatory_properties = ('title', 'date', 'categories')
     default_template = 'article'
 
 
@@ -266,7 +266,7 @@ class URLWrapper(object):
         return self.name
 
     def _from_settings(self, key, get_page_name=False):
-        """Returns URL information as defined in settings. 
+        """Returns URL information as defined in settings.
         When get_page_name=True returns URL without anything after {slug}
         e.g. if in settings: CATEGORY_URL="cat/{slug}.html" this returns "cat/{slug}"
         Useful for pagination."""

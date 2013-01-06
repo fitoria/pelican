@@ -29,7 +29,7 @@ _METADATA_PROCESSORS = {
     'tags': lambda x, y: [Tag(tag, y) for tag in unicode(x).split(',')],
     'date': lambda x, y: get_date(x),
     'status': lambda x, y: unicode.strip(x),
-    'category': Category,
+    'categories': lambda x, y: [Category(cat, y) for cat in unicode(x).split(',')],
     'author': Author,
 }
 

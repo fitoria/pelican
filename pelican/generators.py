@@ -238,7 +238,7 @@ class ArticlesGenerator(Generator):
         """Generate the articles."""
         for article in chain(self.translations, self.articles):
             write(article.save_as, self.get_template(article.template),
-                self.context, article=article, category=article.category)
+                self.context, article=article, categories=article.categories)
 
     def generate_direct_templates(self, write):
         """Generate direct templates pages"""
@@ -328,7 +328,7 @@ class ArticlesGenerator(Generator):
                 continue
 
             # if no category is set, use the name of the path as a category
-            if 'category' not in metadata:
+            if 'categories' not in metadata:
 
                 if (self.settings['USE_FOLDER_AS_CATEGORY']
                     and os.path.dirname(f) != article_path):
@@ -340,7 +340,7 @@ class ArticlesGenerator(Generator):
                     category = self.settings['DEFAULT_CATEGORY']
 
                 if category != '':
-                    metadata['category'] = Category(category, self.settings)
+                    metadata['categories'] = [Category(category, self.settings)]
 
             if 'date' not in metadata and self.settings.get('DEFAULT_DATE'):
                 if self.settings['DEFAULT_DATE'] == 'fs':
@@ -374,7 +374,8 @@ class ArticlesGenerator(Generator):
 
         for article in self.articles:
             # only main articles are listed in categories, not translations
-            self.categories[article.category].append(article)
+            for category in article.categories:
+                self.categories[category].append(article)
             # ignore blank authors as well as undefined
             if hasattr(article,'author') and article.author.name != '':
                 self.authors[article.author].append(article)
